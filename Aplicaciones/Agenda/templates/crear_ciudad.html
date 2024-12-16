@@ -1,0 +1,18 @@
+{% extends "./plantilla.html" %}
+{% block body %}
+
+<br><br><br><br>
+<div class="card">
+    <div class="card-title text-center">
+        <h3><b>Agregar Ciudad</b></h3>
+    </div>
+    <form action="{% url 'crear_ciudad' %}" method="post">
+        {% csrf_token %}
+        <label for="nombre_ciu">Nombre:</label>
+        <input type="text" name="nombre_ciu" class="form-control" placeholder="Ingrese el nombre de la ciudad" required>
+        <br>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{% url 'listar_ciudades' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

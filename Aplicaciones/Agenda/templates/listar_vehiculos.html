@@ -1,0 +1,44 @@
+{% extends "./plantilla.html" %}
+{% block body %}
+
+<br><br><br><br>
+<div class="card">
+    <div class="card-title text-center">
+        <h3><b>Listado de Vehículos</b></h3>
+    </div>
+    <div class="text-end">
+        <a href="{% url 'crear_vehiculo' %}" class="btn btn-success">Agregar Vehículo</a>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fabricación</th>
+                <th>Precio</th>
+                <th>Color</th>
+                <th>Placa</th>
+                <th>Modelo</th>
+                <th>Propietario</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehiculo in vehiculos %}
+            <tr>
+                <td>{{ vehiculo.id_veh }}</td>
+                <td>{{ vehiculo.fabricacion_veh }}</td>
+                <td>{{ vehiculo.precio_veh }}</td>
+                <td>{{ vehiculo.color_veh }}</td>
+                <td>{{ vehiculo.placa_veh }}</td>
+                <td>{{ vehiculo.fk_id_mod.nombre_mod }}</td>
+                <td>{{ vehiculo.fk_id_pro.nombre_pro }}</td>
+                <td>
+                    <a href="{% url 'editar_vehiculo' vehiculo.id_veh %}" class="btn btn-warning">Editar</a>
+                    <a href="{% url 'eliminar_vehiculo' vehiculo.id_veh %}" class="btn btn-danger" onclick="return confirm('¿Estás seguro?');">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "./plantilla.html" %}
+{% block body %}
+
+<br><br><br><br>
+<div class="card">
+    <div class="card-title text-center">
+        <h3><b>Editar Vehículo</b></h3>
+    </div>
+    <form action="{% url 'editar_vehiculo' vehiculo.id_veh %}" method="post">
+        {% csrf_token %}
+        <label for="fabricacion_veh">Año de Fabricación:</label>
+        <input type="text" name="fabricacion_veh" value="{{ vehiculo.fabricacion_veh }}" class="form-control" required>
+        
+        <label for="precio_veh">Precio:</label>
+        <input type="number" name="precio_veh" value="{{ vehiculo.precio_veh }}" class="form-control" step="0.01" required>
+        
+        <label for="color_veh">Color:</label>
+        <input type="text" name="color_veh" value="{{ vehiculo.color_veh }}" class="form-control" required>
+        
+        <label for="placa_veh">Placa:</label>
+        <input type="text" name="placa_veh" value="{{ vehiculo.placa_veh }}" class="form-control" required>
+        
+        <label for="fk_id_mod">Modelo:</label>
+        <select name="fk_id_mod" class="form-control" required>
+            {% for modelo in modelos %}
+            <option value="{{ modelo.id_mod }}" {% if modelo.id_mod == vehiculo.fk_id_mod.id_mod %}selected{% endif %}>
+                {{ modelo.nombre_mod }}
+            </option>
+            {% endfor %}
+        </select>
+        
+        <label for="fk_id_pro">Propietario:</label>
+        <select name="fk_id_pro" class="form-control" required>
+            {% for propietario in propietarios %}
+            <option value="{{ propietario.id_pro }}" {% if propietario.id_pro == vehiculo.fk_id_pro.id_pro %}selected{% endif %}>
+                {{ propietario.nombre_pro }}
+            </option>
+            {% endfor %}
+        </select>
+        
+        <br>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <a href="{% url 'listar_vehiculos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

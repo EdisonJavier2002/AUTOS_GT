@@ -1,0 +1,42 @@
+{% extends "./plantilla.html" %}
+{% block body %}
+
+<br><br><br><br>
+<div class="card">
+    <div class="card-title text-center">
+        <h3><b>Listado de Propietarios</b></h3>
+    </div>
+    <div class="text-end">
+        <a href="{% url 'crear_propietario' %}" class="btn btn-success">Agregar Propietario</a>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Ciudad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for propietario in propietarios %}
+            <tr>
+                <td>{{ propietario.id_pro }}</td>
+                <td>{{ propietario.nombre_pro }}</td>
+                <td>{{ propietario.apellido_pro }}</td>
+                <td>{{ propietario.email_pro }}</td>
+                <td>{{ propietario.telefono_pro }}</td>
+                <td>{{ propietario.fk_id_ciu.nombre_ciu }}</td>
+                <td>
+                    <a href="{% url 'editar_propietario' propietario.id_pro %}" class="btn btn-warning">Editar</a>
+                    <a href="{% url 'eliminar_propietario' propietario.id_pro %}" class="btn btn-danger" onclick="return confirm('¿Estás seguro?');">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

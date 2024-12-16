@@ -1,0 +1,44 @@
+{% extends "./plantilla.html" %}
+{% block body %}
+
+<br><br><br><br>
+<div class="card">
+    <div class="card-title text-center">
+        <h3><b>Agregar Vehículo</b></h3>
+    </div>
+    <form action="{% url 'crear_vehiculo' %}" method="post">
+        {% csrf_token %}
+        <label for="fabricacion_veh">Año de Fabricación:</label>
+        <input type="text" name="fabricacion_veh" class="form-control" required>
+        
+        <label for="precio_veh">Precio:</label>
+        <input type="number" name="precio_veh" class="form-control" step="0.01" required>
+        
+        <label for="color_veh">Color:</label>
+        <input type="text" name="color_veh" class="form-control" required>
+        
+        <label for="placa_veh">Placa:</label>
+        <input type="text" name="placa_veh" class="form-control" required>
+        
+        <label for="fk_id_mod">Modelo:</label>
+        <select name="fk_id_mod" class="form-control" required>
+            <option value="">Seleccione un modelo</option>
+            {% for modelo in modelos %}
+            <option value="{{ modelo.id_mod }}">{{ modelo.nombre_mod }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="fk_id_pro">Propietario:</label>
+        <select name="fk_id_pro" class="form-control" required>
+            <option value="">Seleccione un propietario</option>
+            {% for propietario in propietarios %}
+            <option value="{{ propietario.id_pro }}">{{ propietario.nombre_pro }}</option>
+            {% endfor %}
+        </select>
+        
+        <br>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{% url 'listar_vehiculos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

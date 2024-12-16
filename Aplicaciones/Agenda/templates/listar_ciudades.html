@@ -1,0 +1,34 @@
+{% extends "./plantilla.html" %}
+{% block body %}
+
+<br><br><br><br>
+<div class="card">
+    <div class="card-title text-center">
+        <h3><b>Listado de Ciudades</b></h3>
+    </div>
+    <div class="text-end">
+        <a href="{% url 'crear_ciudad' %}" class="btn btn-success">Agregar Ciudad</a>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ciudad in ciudades %}
+            <tr>
+                <td>{{ ciudad.id_ciu }}</td>
+                <td>{{ ciudad.nombre_ciu }}</td>
+                <td>
+                    <a href="{% url 'editar_ciudad' ciudad.id_ciu %}" class="btn btn-warning">Editar</a>
+                    <a href="{% url 'eliminar_ciudad' ciudad.id_ciu %}" class="btn btn-danger" onclick="return confirm('¿Estás seguro?');">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
