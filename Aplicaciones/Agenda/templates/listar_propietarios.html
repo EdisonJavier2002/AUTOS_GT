@@ -9,7 +9,7 @@
     <div class="text-end">
         <a href="{% url 'crear_propietario' %}" class="btn btn-success">Agregar Propietario</a>
     </div>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped " id="tbl-propietarios">
         <thead>
             <tr>
                 <th>ID</th>
@@ -38,5 +38,8 @@
             {% endfor %}
         </tbody>
     </table>
+    <script>
+        let table = new DataTable('#tbl-propietarios');
+    </script>
 </div>
 {% endblock %}

@@ -1,11 +1,22 @@
 {% extends "./plantilla.html" %}
 {% block body %}
-
 <br><br><br><br>
 <div class="card">
     <div class="card-title text-center">
         <h3><b>Editar Ciudad</b></h3>
     </div>
+
+    <!-- Mensajes de Confirmación -->
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <form id="form-ciudad" action="{% url 'editar_ciudad' ciudad.id_ciu %}" method="post">
         {% csrf_token %}
         <label for="nombre_ciu">Nombre:</label>
@@ -24,7 +35,7 @@
         var nombre = document.getElementById('nombre_ciu');
         var errorElement = document.getElementById('nombre-ciudad-error');
 
-        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]*$/)) {
+        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ\s]+$/)) {
             errorElement.textContent = "El nombre solo puede contener letras y espacios.";
             errorElement.style.display = "block"; 
         } else {
@@ -36,8 +47,8 @@
         var nombre = document.getElementById('nombre_ciu');
         var errorElement = document.getElementById('nombre-ciudad-error');
 
-        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$/)) {
-            e.preventDefault();
+        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ\s]+$/)) {
+            e.preventDefault();  // Evitar el envío del formulario
             errorElement.textContent = "El nombre solo puede contener letras y espacios.";
             errorElement.style.display = "block";
             Swal.fire({

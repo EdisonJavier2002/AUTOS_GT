@@ -9,7 +9,7 @@
     <div class="text-end">
         <a href="{% url 'crear_ciudad' %}" class="btn btn-success">Agregar Ciudad</a>
     </div>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped" id="tbl-ciudades">
         <thead>
             <tr>
                 <th>ID</th>
@@ -30,5 +30,8 @@
             {% endfor %}
         </tbody>
     </table>
+    <script>
+        let table = new DataTable('#tbl-ciudades');
+    </script>
 </div>
 {% endblock %}

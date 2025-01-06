@@ -109,18 +109,25 @@
     <!-- SweetAlert para mensajes de error en tiempo real -->
     {% if messages %}
     {% for mensaje in messages %}
-    {% if mensaje.tags == 'error' %}
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: "{{ mensaje }}",
-            timer: 2000  // El mensaje se mostrará durante 2 segundos
-        });
-    </script>
-    {% endif %}
+        <script>
+            {% if mensaje.tags == 'error' %}
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: "{{ mensaje }}",
+                    timer: 2000  // El mensaje se mostrará durante 2 segundos
+                });
+            {% else %}
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: "{{ mensaje }}",
+                    timer: 2000  // El mensaje se mostrará durante 2 segundos
+                });
+            {% endif %}
+        </script>
     {% endfor %}
-    {% endif %}
+{% endif %}
 
 </body>
 
