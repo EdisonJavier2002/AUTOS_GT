@@ -6,39 +6,199 @@
     <div class="card-title text-center">
         <h3><b>Agregar Vehículo</b></h3>
     </div>
-    <form action="{% url 'crear_vehiculo' %}" method="post">
+    <form id="form-vehiculo" action="{% url 'crear_vehiculo' %}" method="post">
         {% csrf_token %}
-        <label for="fabricacion_veh">Año de Fabricación:</label>
-        <input type="text" name="fabricacion_veh" class="form-control" required>
         
+        <label for="fabricacion_veh">Año de Fabricación:</label>
+        <input type="text" id="fabricacion_veh" name="fabricacion_veh" class="form-control" placeholder="Ingrese el año de fabricación" required
+               pattern="^\d{4}$" 
+               title="El año debe ser un número de 4 dígitos (ejemplo: 2002)">
+        <div class="invalid-feedback" id="fabricacion-error"></div>
+
         <label for="precio_veh">Precio:</label>
-        <input type="number" name="precio_veh" class="form-control" step="0.01" required>
+        <input type="number" id="precio_veh" name="precio_veh" class="form-control" placeholder="Ingrese el precio" required
+               step="0.01" 
+               title="Ingrese un precio válido">
+        <div class="invalid-feedback" id="precio-error"></div>
         
         <label for="color_veh">Color:</label>
-        <input type="text" name="color_veh" class="form-control" required>
+        <input type="text" id="color_veh" name="color_veh" class="form-control" placeholder="Ingrese el color" required
+               pattern="^[A-Za-z ]{1,20}$" 
+               title="El color solo puede contener letras y hasta 20 caracteres.">
+        <div class="invalid-feedback" id="color-error"></div>
         
         <label for="placa_veh">Placa:</label>
-        <input type="text" name="placa_veh" class="form-control" required>
+        <input type="text" id="placa_veh" name="placa_veh" class="form-control" placeholder="Ingrese la placa" required
+               title="Ingrese una placa válida">
+        <div class="invalid-feedback" id="placa-error"></div>
         
         <label for="fk_id_mod">Modelo:</label>
-        <select name="fk_id_mod" class="form-control" required>
+        <select name="fk_id_mod" id="fk_id_mod" class="form-control" required>
             <option value="">Seleccione un modelo</option>
             {% for modelo in modelos %}
-            <option value="{{ modelo.id_mod }}">{{ modelo.nombre_mod }}</option>
+                <option value="{{ modelo.id_mod }}">{{ modelo.nombre_mod }}</option>
             {% endfor %}
         </select>
+        <div class="invalid-feedback" id="modelo-error"></div>
         
         <label for="fk_id_pro">Propietario:</label>
-        <select name="fk_id_pro" class="form-control" required>
+        <select name="fk_id_pro" id="fk_id_pro" class="form-control" required>
             <option value="">Seleccione un propietario</option>
             {% for propietario in propietarios %}
-            <option value="{{ propietario.id_pro }}">{{ propietario.nombre_pro }}</option>
+                <option value="{{ propietario.id_pro }}">{{ propietario.nombre_pro }}</option>
             {% endfor %}
         </select>
+        <div class="invalid-feedback" id="propietario-error"></div>
         
         <br>
         <button type="submit" class="btn btn-primary">Guardar</button>
         <a href="{% url 'listar_vehiculos' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+
+<script>
+    // Validación en tiempo real para el campo de fabricación
+    document.getElementById('fabricacion_veh').addEventListener('input', function() {
+        var fabricacion = document.getElementById('fabricacion_veh');
+        var errorElement = document.getElementById('fabricacion-error');
+
+        if (!fabricacion.value.match(/^\d{4}$/)) {
+            errorElement.textContent = "El año debe ser un número de 4 dígitos (ejemplo: 2002).";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    // Validación en tiempo real para el campo de precio
+    document.getElementById('precio_veh').addEventListener('input', function() {
+        var precio = document.getElementById('precio_veh');
+        var errorElement = document.getElementById('precio-error');
+
+        if (precio.value <= 0) {
+            errorElement.textContent = "El precio debe ser un valor mayor a cero.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    // Validación en tiempo real para el campo de color
+    document.getElementById('color_veh').addEventListener('input', function() {
+        var color = document.getElementById('color_veh');
+        var errorElement = document.getElementById('color-error');
+
+        if (!color.value.match(/^[A-Za-z ]{1,20}$/)) {
+            errorElement.textContent = "El color solo puede contener letras y hasta 20 caracteres.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    // Validación en tiempo real para el campo de placa
+    document.getElementById('placa_veh').addEventListener('input', function() {
+        var placa = document.getElementById('placa_veh');
+        var errorElement = document.getElementById('placa-error');
+
+        if (!placa.value) {
+            errorElement.textContent = "Por favor, ingrese una placa válida.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    // Validación en tiempo real para el campo de modelo
+    document.getElementById('fk_id_mod').addEventListener('change', function() {
+        var modelo = document.getElementById('fk_id_mod');
+        var errorElement = document.getElementById('modelo-error');
+
+        if (!modelo.value) {
+            errorElement.textContent = "Por favor, seleccione un modelo.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    // Validación en tiempo real para el campo de propietario
+    document.getElementById('fk_id_pro').addEventListener('change', function() {
+        var propietario = document.getElementById('fk_id_pro');
+        var errorElement = document.getElementById('propietario-error');
+
+        if (!propietario.value) {
+            errorElement.textContent = "Por favor, seleccione un propietario.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    // Validación cuando se envía el formulario
+    document.getElementById('form-vehiculo').addEventListener('submit', function(e) {
+        var fabricacion = document.getElementById('fabricacion_veh');
+        var precio = document.getElementById('precio_veh');
+        var color = document.getElementById('color_veh');
+        var placa = document.getElementById('placa_veh');
+        var modelo = document.getElementById('fk_id_mod');
+        var propietario = document.getElementById('fk_id_pro');
+        var errorFabricacionElement = document.getElementById('fabricacion-error');
+        var errorPrecioElement = document.getElementById('precio-error');
+        var errorColorElement = document.getElementById('color-error');
+        var errorPlacaElement = document.getElementById('placa-error');
+        var errorModeloElement = document.getElementById('modelo-error');
+        var errorPropietarioElement = document.getElementById('propietario-error');
+
+        // Validaciones de campos
+        if (!fabricacion.value.match(/^\d{4}$/)) {
+            e.preventDefault();
+            errorFabricacionElement.textContent = "El año debe ser un número de 4 dígitos.";
+            errorFabricacionElement.style.display = "block";
+        } else {
+            errorFabricacionElement.style.display = "none";
+        }
+
+        if (precio.value <= 0) {
+            e.preventDefault();
+            errorPrecioElement.textContent = "El precio debe ser mayor a cero.";
+            errorPrecioElement.style.display = "block";
+        } else {
+            errorPrecioElement.style.display = "none";
+        }
+
+        if (!color.value.match(/^[A-Za-z ]{1,20}$/)) {
+            e.preventDefault();
+            errorColorElement.textContent = "El color solo puede contener letras y hasta 20 caracteres.";
+            errorColorElement.style.display = "block";
+        } else {
+            errorColorElement.style.display = "none";
+        }
+
+        if (!placa.value) {
+            e.preventDefault();
+            errorPlacaElement.textContent = "Por favor, ingrese una placa válida.";
+            errorPlacaElement.style.display = "block";
+        } else {
+            errorPlacaElement.style.display = "none";
+        }
+
+        if (!modelo.value) {
+            e.preventDefault();
+            errorModeloElement.textContent = "Por favor, seleccione un modelo.";
+            errorModeloElement.style.display = "block";
+        } else {
+            errorModeloElement.style.display = "none";
+        }
+
+        if (!propietario.value) {
+            e.preventDefault();
+            errorPropietarioElement.textContent = "Por favor, seleccione un propietario.";
+            errorPropietarioElement.style.display = "block";
+        } else {
+            errorPropietarioElement.style.display = "none";
+        }
+    });
+</script>
+
 {% endblock %}

@@ -6,26 +6,38 @@
     <div class="card-title text-center">
         <h3><b>Editar Propietario</b></h3>
     </div>
-    <form action="{% url 'editar_propietario' propietario.id_pro %}" method="post">
+    <form id="form-editar-propietario" action="{% url 'editar_propietario' propietario.id_pro %}" method="post">
         {% csrf_token %}
-        <label for="nombre_pro">Nombre:</label>
-        <input type="text" name="nombre_pro" value="{{ propietario.nombre_pro }}" class="form-control" required>
         
+        <label for="nombre_pro">Nombre:</label>
+        <input type="text" id="nombre_pro" name="nombre_pro" value="{{ propietario.nombre_pro }}" class="form-control" required
+               pattern="^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$" 
+               title="El nombre solo puede contener letras y espacios.">
+        <div class="invalid-feedback" id="nombre-error"></div>
+
         <label for="apellido_pro">Apellido:</label>
-        <input type="text" name="apellido_pro" value="{{ propietario.apellido_pro }}" class="form-control" required>
+        <input type="text" id="apellido_pro" name="apellido_pro" value="{{ propietario.apellido_pro }}" class="form-control" required
+               pattern="^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$" 
+               title="El apellido solo puede contener letras y espacios.">
+        <div class="invalid-feedback" id="apellido-error"></div>
         
         <label for="email_pro">Email:</label>
-        <input type="email" name="email_pro" value="{{ propietario.email_pro }}" class="form-control" required>
+        <input type="email" id="email_pro" name="email_pro" value="{{ propietario.email_pro }}" class="form-control" required>
+        <div class="invalid-feedback" id="email-error"></div>
         
         <label for="telefono_pro">Teléfono:</label>
-        <input type="text" name="telefono_pro" value="{{ propietario.telefono_pro }}" class="form-control" required>
+        <input type="text" id="telefono_pro" name="telefono_pro" value="{{ propietario.telefono_pro }}" class="form-control" required
+               pattern="^[0-9]{10}$" 
+               title="El teléfono debe contener solo 10 dígitos numéricos.">
+        <div class="invalid-feedback" id="telefono-error"></div>
         
         <label for="fk_id_ciu">Ciudad:</label>
-        <select name="fk_id_ciu" class="form-control" required>
+        <select name="fk_id_ciu" id="fk_id_ciu" class="form-control" required>
+            <option value="">Seleccione una ciudad</option>
             {% for ciudad in ciudades %}
-            <option value="{{ ciudad.id_ciu }}" {% if ciudad.id_ciu == propietario.fk_id_ciu.id_ciu %}selected{% endif %}>
-                {{ ciudad.nombre_ciu }}
-            </option>
+                <option value="{{ ciudad.id_ciu }}" {% if ciudad.id_ciu == propietario.fk_id_ciu.id_ciu %}selected{% endif %}>
+                    {{ ciudad.nombre_ciu }}
+                </option>
             {% endfor %}
         </select>
         
@@ -34,4 +46,107 @@
         <a href="{% url 'listar_propietarios' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+
+<script>
+    // Validación en tiempo real para el campo de nombre
+    document.getElementById('nombre_pro').addEventListener('input', function() {
+        var nombre = document.getElementById('nombre_pro');
+        var errorElement = document.getElementById('nombre-error');
+
+        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]*$/)) {
+            errorElement.textContent = "El nombre solo puede contener letras y espacios.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    // Validación en tiempo real para el campo de apellido
+    document.getElementById('apellido_pro').addEventListener('input', function() {
+        var apellido = document.getElementById('apellido_pro');
+        var errorElement = document.getElementById('apellido-error');
+
+        if (!apellido.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]*$/)) {
+            errorElement.textContent = "El apellido solo puede contener letras y espacios.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    // Validación en tiempo real para el campo de email
+    document.getElementById('email_pro').addEventListener('input', function() {
+        var email = document.getElementById('email_pro');
+        var errorElement = document.getElementById('email-error');
+
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+        if (!email.value.match(emailPattern)) {
+            errorElement.textContent = "Por favor, ingrese un correo electrónico válido.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    // Validación en tiempo real para el campo de teléfono
+    document.getElementById('telefono_pro').addEventListener('input', function() {
+        var telefono = document.getElementById('telefono_pro');
+        var errorElement = document.getElementById('telefono-error');
+
+        if (!telefono.value.match(/^[0-9]{10}$/)) {
+            errorElement.textContent = "El teléfono debe contener solo 10 dígitos numéricos.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    // Validación cuando se envía el formulario
+    document.getElementById('form-editar-propietario').addEventListener('submit', function(e) {
+        var nombre = document.getElementById('nombre_pro');
+        var apellido = document.getElementById('apellido_pro');
+        var email = document.getElementById('email_pro');
+        var telefono = document.getElementById('telefono_pro');
+        var errorElement = document.getElementById('nombre-error');
+        var apellidoErrorElement = document.getElementById('apellido-error');
+        var emailErrorElement = document.getElementById('email-error');
+        var telefonoErrorElement = document.getElementById('telefono-error');
+
+        // Validaciones de campos
+        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$/)) {
+            e.preventDefault();
+            errorElement.textContent = "El nombre solo puede contener letras y espacios.";
+            errorElement.style.display = "block";
+        } else {
+            errorElement.style.display = "none";
+        }
+
+        if (!apellido.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$/)) {
+            e.preventDefault();
+            apellidoErrorElement.textContent = "El apellido solo puede contener letras y espacios.";
+            apellidoErrorElement.style.display = "block";
+        } else {
+            apellidoErrorElement.style.display = "none";
+        }
+
+        if (!email.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/)) {
+            e.preventDefault();
+            emailErrorElement.textContent = "Por favor, ingrese un correo electrónico válido.";
+            emailErrorElement.style.display = "block";
+        } else {
+            emailErrorElement.style.display = "none";
+        }
+
+        if (!telefono.value.match(/^[0-9]{10}$/)) {
+            e.preventDefault();
+            telefonoErrorElement.textContent = "El teléfono debe contener solo 10 dígitos numéricos.";
+            telefonoErrorElement.style.display = "block";
+        } else {
+            telefonoErrorElement.style.display = "none";
+        }
+    });
+</script>
+
 {% endblock %}
+

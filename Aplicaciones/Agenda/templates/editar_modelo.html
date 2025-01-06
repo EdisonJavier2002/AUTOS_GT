@@ -6,13 +6,50 @@
     <div class="card-title text-center">
         <h3><b>Editar Modelo</b></h3>
     </div>
-    <form action="{% url 'editar_modelo' modelo.id_mod %}" method="post">
+    <form id="form-modelo" action="{% url 'editar_modelo' modelo.id_mod %}" method="post">
         {% csrf_token %}
         <label for="nombre_mod">Nombre del Modelo:</label>
-        <input type="text" name="nombre_mod" value="{{ modelo.nombre_mod }}" class="form-control" required>
+        <input type="text" id="nombre_mod" name="nombre_mod" value="{{ modelo.nombre_mod }}" class="form-control" maxlength="20" required
+               pattern="^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$" 
+               title="El nombre solo puede contener letras y espacios">
+        <div class="invalid-feedback" id="nombre-modelo-error"></div>
         <br>
         <button type="submit" class="btn btn-primary">Actualizar</button>
         <a href="{% url 'listar_modelos' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+
+<script>
+    document.getElementById('nombre_mod').addEventListener('input', function() {
+        var nombre = document.getElementById('nombre_mod');
+        var errorElement = document.getElementById('nombre-modelo-error');
+
+        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]*$/)) {
+            errorElement.textContent = "El nombre solo puede contener letras y espacios.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    document.getElementById('form-modelo').addEventListener('submit', function(e) {
+        var nombre = document.getElementById('nombre_mod');
+        var errorElement = document.getElementById('nombre-modelo-error');
+
+        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$/)) {
+            e.preventDefault();
+            errorElement.textContent = "El nombre solo puede contener letras y espacios.";
+            errorElement.style.display = "block";
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: "El nombre del modelo es incorrecto.",
+                timer: 2000
+            });
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+</script>
+
 {% endblock %}

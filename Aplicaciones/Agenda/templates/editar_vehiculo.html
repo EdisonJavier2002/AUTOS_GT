@@ -9,13 +9,15 @@
     <form action="{% url 'editar_vehiculo' vehiculo.id_veh %}" method="post">
         {% csrf_token %}
         <label for="fabricacion_veh">Año de Fabricación:</label>
-        <input type="text" name="fabricacion_veh" value="{{ vehiculo.fabricacion_veh }}" class="form-control" required>
+        <input type="text" name="fabricacion_veh" value="{{ vehiculo.fabricacion_veh }}" class="form-control" required 
+            pattern="^\d{4}$" title="Solo números de 4 dígitos (ejemplo: 2002)">
         
         <label for="precio_veh">Precio:</label>
         <input type="number" name="precio_veh" value="{{ vehiculo.precio_veh }}" class="form-control" step="0.01" required>
         
         <label for="color_veh">Color:</label>
-        <input type="text" name="color_veh" value="{{ vehiculo.color_veh }}" class="form-control" required>
+        <input type="text" name="color_veh" value="{{ vehiculo.color_veh }}" class="form-control" required 
+            pattern="^[A-Za-z ]{1,20}$" title="Solo letras y hasta 20 caracteres">
         
         <label for="placa_veh">Placa:</label>
         <input type="text" name="placa_veh" value="{{ vehiculo.placa_veh }}" class="form-control" required>

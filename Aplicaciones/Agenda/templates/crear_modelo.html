@@ -6,13 +6,52 @@
     <div class="card-title text-center">
         <h3><b>Agregar Modelo</b></h3>
     </div>
-    <form action="{% url 'crear_modelo' %}" method="post">
+    <form id="form-modelo" action="{% url 'crear_modelo' %}" method="post">
         {% csrf_token %}
         <label for="nombre_mod">Nombre:</label>
-        <input type="text" name="nombre_mod" class="form-control" placeholder="Ingrese el nombre del modelo" required>
+        <input type="text" id="nombre_mod" name="nombre_mod" class="form-control" placeholder="Ingrese el nombre del modelo" maxlength="20" required 
+               pattern="^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$" title="El nombre del modelo solo puede contener letras y espacios">
+        <div class="invalid-feedback" id="nombre-error"></div>
         <br>
         <button type="submit" class="btn btn-primary">Guardar</button>
         <a href="{% url 'listar_modelos' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+
+<script>
+    document.getElementById('nombre_mod').addEventListener('input', function() {
+        var nombre = document.getElementById('nombre_mod');
+        var errorElement = document.getElementById('nombre-error');
+
+        // Validación del nombre usando la expresión regular definida en el input
+        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]*$/)) {
+            errorElement.textContent = "El nombre del modelo solo puede contener letras y espacios.";
+            errorElement.style.display = "block"; // Muestra el error debajo del input
+        } else {
+            errorElement.style.display = "none"; // Oculta el mensaje si la validación es correcta
+        }
+    });
+
+    // Validación cuando se envía el formulario
+    document.getElementById('form-modelo').addEventListener('submit', function(e) {
+        var nombre = document.getElementById('nombre_mod');
+        var errorElement = document.getElementById('nombre-error');
+
+        // Validación del nombre cuando se envía el formulario
+        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$/)) {
+            e.preventDefault(); // Previene el envío del formulario
+            errorElement.textContent = "El nombre del modelo solo puede contener letras y espacios.";
+            errorElement.style.display = "block";
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: "El nombre del modelo es incorrecto.",
+                timer: 2000
+            });
+        } else {
+            errorElement.style.display = "none"; // Oculta el mensaje si la validación es correcta
+        }
+    });
+</script>
+
 {% endblock %}

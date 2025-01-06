@@ -6,13 +6,50 @@
     <div class="card-title text-center">
         <h3><b>Editar Ciudad</b></h3>
     </div>
-    <form action="{% url 'editar_ciudad' ciudad.id_ciu %}" method="post">
+    <form id="form-ciudad" action="{% url 'editar_ciudad' ciudad.id_ciu %}" method="post">
         {% csrf_token %}
         <label for="nombre_ciu">Nombre:</label>
-        <input type="text" name="nombre_ciu" value="{{ ciudad.nombre_ciu }}" class="form-control" required>
+        <input type="text" id="nombre_ciu" name="nombre_ciu" value="{{ ciudad.nombre_ciu }}" class="form-control" required 
+               pattern="^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$" 
+               title="El nombre solo puede contener letras y espacios">
+        <div class="invalid-feedback" id="nombre-ciudad-error"></div>
         <br>
         <button type="submit" class="btn btn-warning">Actualizar</button>
         <a href="{% url 'listar_ciudades' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+
+<script>
+    document.getElementById('nombre_ciu').addEventListener('input', function() {
+        var nombre = document.getElementById('nombre_ciu');
+        var errorElement = document.getElementById('nombre-ciudad-error');
+
+        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]*$/)) {
+            errorElement.textContent = "El nombre solo puede contener letras y espacios.";
+            errorElement.style.display = "block"; 
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+
+    document.getElementById('form-ciudad').addEventListener('submit', function(e) {
+        var nombre = document.getElementById('nombre_ciu');
+        var errorElement = document.getElementById('nombre-ciudad-error');
+
+        if (!nombre.value.match(/^[A-Za-zÁáÉéÍíÓóÚúÑñ ]+$/)) {
+            e.preventDefault();
+            errorElement.textContent = "El nombre solo puede contener letras y espacios.";
+            errorElement.style.display = "block";
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: "El nombre de la ciudad es incorrecto.",
+                timer: 2000
+            });
+        } else {
+            errorElement.style.display = "none";
+        }
+    });
+</script>
+
 {% endblock %}

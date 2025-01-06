@@ -1,17 +1,17 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>VEHICULOS</title>
 
     <!--Importando jQuery-->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <!--Importando boostrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -26,15 +26,10 @@
 
     <!-- CSS FILES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;400;700&display=swap" rel="stylesheet">
-
     <link href=" {% static 'plantilla/festava/css/bootstrap.min.css' %}" rel="stylesheet">
-
     <link href=" {% static 'plantilla/festava/css/bootstrap-icons.css' %}" rel="stylesheet">
-
     <link href=" {% static 'plantilla/festava/css/templatemo-festava-live.css' %}" rel="stylesheet">
 
 </head>
@@ -43,46 +38,39 @@
     <header class="site-header">
         <div class="container">
             <div class="row">
-
                 <div class="col-lg-12 col-12 d-flex flex-wrap">
                     <p class="d-flex me-4 mb-0">
                         <i class="bi-person custom-icon me-2"></i>
                         <strong class="text-dark">Bienvenido Vehículos 2024</strong>
                     </p>
                 </div>
-
             </div>
         </div>
     </header>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">
                 Vehículos
             </a>
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
                     <li class="nav-item">
                         <a class="nav-link " href="{% url 'home' %}">Inicio</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link " href="{% url 'listar_ciudades' %}">Ciudades</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link " href="{% url 'listar_modelos' %}">Modelos</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link " href="{% url 'listar_propietarios' %}">Propietarios</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link " href="{% url 'listar_vehiculos' %}">Vehiculos</a>
                     </li>
@@ -90,132 +78,24 @@
             </div>
         </div>
     </nav>
+
+    <!-- Bloque para mostrar mensajes -->
+    {% if messages %}
+    <div class="container mt-3">
+        <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
     <!--Estas dos lineas nos permitiran añadir el contenido entre el menu y el pie de página-->
     {% block body %}
     {% endblock %}
+
     <footer class="site-footer">
-        <div class="site-footer-top">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-lg-6 col-12">
-                        <h2 class="text-white mb-lg-0">Vehículos</h2>
-                    </div>
-
-                    <div class="col-lg-6 col-12 d-flex justify-content-lg-end align-items-center">
-                        <ul class="social-icon d-flex justify-content-lg-end">
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link">
-                                    <span class="bi-twitter"></span>
-                                </a>
-                            </li>
-
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link">
-                                    <span class="bi-apple"></span>
-                                </a>
-                            </li>
-
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link">
-                                    <span class="bi-instagram"></span>
-                                </a>
-                            </li>
-
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link">
-                                    <span class="bi-youtube"></span>
-                                </a>
-                            </li>
-
-                            <li class="social-icon-item">
-                                <a href="#" class="social-icon-link">
-                                    <span class="bi-pinterest"></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-
-                <div class="col-lg-6 col-12 mb-4 pb-2">
-                    <h5 class="site-footer-title mb-3">Links</h5>
-
-                    <ul class="site-footer-links">
-                        <li class="site-footer-link-item">
-                            <a href="{% url 'home' %}" class="site-footer-link">Inicio</a>
-                        </li>
-
-                        <li class="site-footer-link-item">
-                            <a href="{% url 'listar_ciudades' %}" class="site-footer-link">Ciudades</a>
-                        </li>
-
-                        <li class="site-footer-link-item">
-                            <a href="{% url 'listar_modelos' %}" class="site-footer-link">Modelos</a>
-                        </li>
-
-                        <li class="site-footer-link-item">
-                            <a href="{% url 'listar_propietarios' %}" class="site-footer-link">Propietarios</a>
-                        </li>
-
-                        <li class="site-footer-link-item">
-                            <a href="{% url 'listar_vehiculos' %}" class="site-footer-link">Vehiculos</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                    <h5 class="site-footer-title mb-3">¿Tienes una pregunta?</h5>
-
-                    <p class="text-white d-flex mb-1">
-                        <p class="site-footer-link">
-                            090-080-0760
-                        </p>
-                    </p>
-
-                    <p class="text-white d-flex">
-                        <p class="site-footer-link">
-                            vehiculos.tg@company.com
-                        </p>
-                    </p>
-                </div>
-
-                <div class="col-lg-3 col-md-6 col-11 mb-4 mb-lg-0 mb-md-0">
-                    <h5 class="site-footer-title mb-3">Ubicación</h5>
-
-                    <p class="text-white d-flex mt-3 mb-2">
-                        Eloy Alfaro, Latacunga, Cotopaxi, Ecuador</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="site-footer-bottom">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-lg-3 col-12 mt-5">
-                        <p class="copyright-text">Copyright © 2024 Conciertos Live Company</p>
-                        <p class="copyright-text">Desarrollado por: Edison Guala y Adrian Troya</p>
-                    </div>
-
-                    <div class="col-lg-8 col-12 mt-lg-5">
-                        <ul class="site-footer-links">
-                            <li class="site-footer-link-item">
-                                <p class="site-footer-link">Términos &amp; Condiciones</p>
-                            </li>
-
-                            <li class="site-footer-link-item">
-                                <p class="site-footer-link">Política de Privacidad</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Contenido del pie de página -->
     </footer>
 
     <!-- JAVASCRIPT FILES -->
@@ -224,22 +104,24 @@
     <script src="{% static 'plantilla/festava/js/jquery.sticky.js' %}"></script>
     <script src="{% static 'plantilla/festava/js/click-scroll.js' %}"></script>
     <script src="{% static 'plantilla/festava/js/custom.js' %}"></script>
-    
-    
-      {% if messages %}
-        {% for mensaje in messages %}
-            {% if mensaje.tags == 'success' %}
-                <script>
-                    Swal.fire({
-                    title: "CONFIRMACIÓN",
-                    text: "{{mensaje}}",
-                    icon: "success"
-                    });
-                </script>
-            {% endif %}
-        {% endfor %}
-      {% endif %}
-      
+
+    <!-- SweetAlert para mensajes -->
+    <!-- SweetAlert para mensajes de error en tiempo real -->
+    {% if messages %}
+    {% for mensaje in messages %}
+    {% if mensaje.tags == 'error' %}
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: "{{ mensaje }}",
+            timer: 2000  // El mensaje se mostrará durante 2 segundos
+        });
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
 </body>
 
 </html>
